@@ -30,6 +30,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
@@ -54,9 +55,12 @@ import xyz.nucleoid.plasmid.api.game.player.JoinOffer;
 import xyz.nucleoid.plasmid.api.game.player.PlayerSet;
 import xyz.nucleoid.plasmid.api.game.rule.GameRuleType;
 import xyz.nucleoid.stimuli.event.EventResult;
+import xyz.nucleoid.stimuli.event.player.PlayerDamageEvent;
 import xyz.nucleoid.stimuli.event.player.PlayerDeathEvent;
 
-public class DiceyHeightsActivePhase implements GameActivityEvents.Enable, GameActivityEvents.Tick, GamePlayerEvents.Accept, GamePlayerEvents.Remove, PlayerDeathEvent {
+public class DiceyHeightsActivePhase implements GameActivityEvents.Enable, GameActivityEvents.Tick, GamePlayerEvents.Accept, GamePlayerEvents.Remove, PlayerDamageEvent, PlayerDeathEvent {
+	private static final Text NO_DIRECT_ATTACKS_MESSAGE = Text.translatable("text.diceyheights.no_direct_attacks").formatted(Formatting.RED);
+
 	private final GameSpace gameSpace;
 	private final Random random;
 	private final ServerWorld world;
@@ -180,6 +184,7 @@ public class DiceyHeightsActivePhase implements GameActivityEvents.Enable, GameA
 			activity.listen(GamePlayerEvents.ACCEPT, phase);
 			activity.listen(GamePlayerEvents.OFFER, JoinOffer::acceptSpectators);
 			activity.listen(GamePlayerEvents.REMOVE, phase);
+			activity.listen(PlayerDamageEvent.EVENT, phase);
 			activity.listen(PlayerDeathEvent.EVENT, phase);
 		});
 	}
@@ -255,6 +260,16 @@ public class DiceyHeightsActivePhase implements GameActivityEvents.Enable, GameA
 	@Override
 	public void onRemovePlayer(ServerPlayerEntity player) {
 		this.eliminate(this.getPlayerEntry(player));
+	}
+
+	@Override
+	public EventResult onDamage(ServerPlayerEntity player, DamageSource source, float amount) {
+		if (this.config.preventDirectAttacks() && source.getSource() instanceof ServerPlayerEntity attacker) {
+			attacker.sendMessage(NO_DIRECT_ATTACKS_MESSAGE, true);
+			return EventResult.DENY;
+		}
+
+		return EventResult.PASS;
 	}
 
 	@Override

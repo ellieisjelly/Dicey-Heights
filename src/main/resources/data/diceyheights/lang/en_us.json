@@ -25,6 +25,7 @@
 	"game.diceyheights.standard_pillar_spawning_dicey_heights_4_teams": "Pillar-Spawning Dicey Heights: 4 Teams",
 	"gameType.diceyheights.dicey_heights": "Dicey Heights",
 	"text.diceyheights.eliminated": "%s has been eliminated!",
+	"text.diceyheights.no_direct_attacks": "Attacking other players directly is not allowed!",
 	"text.diceyheights.no_winners": "Nobody won the game!",
 	"text.diceyheights.win": "%s has won the game!",
 	"text.diceyheights.win.team": "The %s team has won the game!"

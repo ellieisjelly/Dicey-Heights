@@ -29,6 +29,7 @@ public record DiceyHeightsConfig(
 	IntProvider itemCount,
 	ItemSpawnStrategy itemSpawnStrategy,
 	boolean separate,
+	boolean preventDirectAttacks,
 	IntProvider ticksUntilClose
 ) {
 	public static final MapCodec<DiceyHeightsConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> {
@@ -44,6 +45,7 @@ public record DiceyHeightsConfig(
 			IntProvider.POSITIVE_CODEC.optionalFieldOf("item_count", ConstantIntProvider.create(1)).forGetter(DiceyHeightsConfig::itemCount),
 			ItemSpawnStrategy.CODEC.optionalFieldOf("item_spawn_strategy", ItemSpawnStrategy.DIRECT).forGetter(DiceyHeightsConfig::itemSpawnStrategy),
 			Codec.BOOL.optionalFieldOf("separate", false).forGetter(DiceyHeightsConfig::separate),
+			Codec.BOOL.optionalFieldOf("prevent_direct_attacks", false).forGetter(DiceyHeightsConfig::preventDirectAttacks),
 			IntProvider.NON_NEGATIVE_CODEC.optionalFieldOf("ticks_until_close", ConstantIntProvider.create(SharedConstants.TICKS_PER_SECOND * 5)).forGetter(DiceyHeightsConfig::ticksUntilClose)
 		).apply(instance, DiceyHeightsConfig::new);
 	});

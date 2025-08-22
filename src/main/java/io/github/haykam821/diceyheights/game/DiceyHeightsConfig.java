@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import io.github.haykam821.diceyheights.game.item.ItemSpawnStrategy;
 import io.github.haykam821.diceyheights.game.map.DiceyHeightsMapConfig;
 import net.minecraft.SharedConstants;
 import net.minecraft.item.Item;

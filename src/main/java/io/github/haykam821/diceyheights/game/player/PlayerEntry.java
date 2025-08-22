@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import com.google.common.collect.ImmutableSet;
 
 import io.github.haykam821.diceyheights.DiceyHeights;
-import io.github.haykam821.diceyheights.game.ItemSpawnStrategy;
+import io.github.haykam821.diceyheights.game.item.ItemSpawnStrategy;
 import io.github.haykam821.diceyheights.game.map.DiceyHeightsMap;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityPosition;

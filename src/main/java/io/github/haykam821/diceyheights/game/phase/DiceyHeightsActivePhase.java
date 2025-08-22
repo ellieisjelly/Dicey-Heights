@@ -9,7 +9,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import io.github.haykam821.diceyheights.game.DiceyHeightsConfig;
-import io.github.haykam821.diceyheights.game.ItemSpawnStrategy;
+import io.github.haykam821.diceyheights.game.item.ComponentRandomizer;
+import io.github.haykam821.diceyheights.game.item.ItemSpawnStrategy;
 import io.github.haykam821.diceyheights.game.map.DiceyHeightsMap;
 import io.github.haykam821.diceyheights.game.player.PlayerEntry;
 import io.github.haykam821.diceyheights.game.player.TeamEntry;
@@ -306,17 +307,24 @@ public class DiceyHeightsActivePhase implements GameActivityEvents.Enable, GameA
 						return this.getRandomItem()
 							.map(entry -> {
 								int count = this.config.itemCount().get(this.random);
-								return new ItemStack(entry, count);
+
+								ItemStack stack = new ItemStack(entry, count);
+								ComponentRandomizer.applyTo(stack, this.world, this.random);
+
+								return stack;
 							})
 							.orElse(ItemStack.EMPTY);
 					});
 				}
 			} else {
 				this.getRandomItem().ifPresent(entry -> {
+					ItemStack stack = new ItemStack(entry);
+					ComponentRandomizer.applyTo(stack, this.world, this.random);
+
 					for (PlayerEntry player : this.players) {
 						player.giveItemStack(this.world, strategy, () -> {
 							int count = this.config.itemCount().get(this.random);
-							return new ItemStack(entry, count);
+							return stack.copyWithCount(count);
 						});
 					}
 				});

@@ -1,4 +1,4 @@
-package io.github.haykam821.diceyheights.game;
+package io.github.haykam821.diceyheights.game.item;
 
 import com.mojang.serialization.Codec;
 
